@@ -1,0 +1,23 @@
+{
+  "name": "andycall",
+  "version": "0.0.1",
+  "authors": [
+    "andycall"
+  ],
+  "description": "contact for yhtree",
+  "main": "index.js",
+  "keywords": [
+    "contact"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.4"
+  }
+}
