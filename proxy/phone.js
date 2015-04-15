@@ -26,10 +26,12 @@ exports.getPhoneById = function(id, callback) {
 exports.newAndSave = function(data, callback) {
     var phone = new Phone();
 
-    for(var i = 0, len = data.users.length; i < len ; i ++) {
-        phone.users.push({
-            username :  data.users[i].username,
-            phones : data.users[i].phones
+    phone.username = data.username;
+
+    for(var i = 0, len = data.contacts.length; i < len ; i ++) {
+        phone.contacts.push({
+            username :  data.contacts[i].username,
+            phones : data.contacts[i].phones
         });
     }
 

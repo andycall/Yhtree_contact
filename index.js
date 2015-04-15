@@ -19,29 +19,6 @@ app.use(bodyParser.urlencoded({}));
 
 app.use('/', router);
 
-//app.get('/', function(req, res){
-//    res.end('123');
-//});
-//
-//app.post('/', function(req, res){
-//    console.log(req.body);
-//    return res.json(req.body);
-//});
-//
-//app.post('/upload', function(req, res){
-//    var form = new multiparty.Form();
-//
-//    form.parse(req, function(err, field, files){
-//        console.log(files);
-//        res.writeHead(200, {'content-type' : "text/plain"});
-//        res.write('upload success!');
-//        res.end(util.inspect({
-//            field : field,
-//            files : files
-//        }));
-//    });
-//});
-
 http.listen(config.port, function(){
     console.log('server listening at port 7890');
 });

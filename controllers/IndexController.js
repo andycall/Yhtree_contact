@@ -29,7 +29,7 @@ exports.get = function(req, res) {
 
 
 exports.post = function(req, res) {
-    var users = req.body.users;
+    var users = req.body.contacts;
 
     if(users.length === 0) {
        return res.state(404).end();
