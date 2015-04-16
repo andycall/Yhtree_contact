@@ -6,11 +6,12 @@ var startPerson = "andy";
 var Phone = require('../proxy/phone');
 var EventProxy = require('eventproxy');
 var _ = require('lodash');
+var relative = require('../proxy/relative');
 
 
 function Person(name, phones, contacts) {
-    this.name = name;
-    this.phones = phones;
+    this.username = name;
+    this.phone = phones;
     this.relatives = {};
     this.contacts = contacts;
 }
@@ -41,11 +42,14 @@ function findRelative(base) {
 
     proxy.after('searchRelative', base.contacts.length, function(persons) {
 
-
         _.each(persons, function(person) {
 
             _.each(person.contacts, function(relative) {
                 var username = relative.username;
+                if( username === startPerson){
+                    return;
+                }
+
                 if( ! base.relatives[username] ) {
                     base.relatives[username] = 0;
                 }
@@ -54,24 +58,8 @@ function findRelative(base) {
             });
 
         });
-
-        exports.base = base;
+        relative.newAndSave(base, function(){
+            console.log('relative saved');
+        });
     });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

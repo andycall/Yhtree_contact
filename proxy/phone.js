@@ -17,6 +17,9 @@ exports.getPhoneByName = function(name, callback) {
     Phone.findOne({'username' : name}, callback);
 };
 
+exports.getNameByPhone = function(phone, callback) {
+    Phone.findOne({'phone': phone}, callback);
+};
 
 exports.getPhoneById = function(id, callback) {
     Phone.findOne({ _id : id}, callback);

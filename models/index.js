@@ -14,6 +14,8 @@ mongoose.connect(config.db, function(err) {
 });
 
 require('./phone');
+require('./relative');
 
 
+exports.Relative = mongoose.model('Relative');
 exports.Phone = mongoose.model('Phone');
