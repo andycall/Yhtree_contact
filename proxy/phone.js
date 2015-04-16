@@ -4,7 +4,7 @@
 var model = require('../models');
 var Phone = model.Phone;
 
-exports.getPhonesByName = function(names, callback) {
+exports.getPhonesByName = function(name, callback) {
     if(names.length === 0) {
         return callback(null, []);
     }

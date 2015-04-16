@@ -17,7 +17,7 @@ var config = {
     redis_port: 6379,
 
     // 程序运行的端口
-    port: 7890,
+    port: 7890
 
 };
 

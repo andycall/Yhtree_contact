@@ -34,8 +34,12 @@ exports.post = function(req, res) {
     if(users.length === 0) {
        return res.state(404).end();
     }
+    console.log(req.body);
 
     phone.newAndSave(req.body, function(err) {
+        if(err) {
+            throw new Error(err);
+        }
         console.log('save complete!');
     });
 
