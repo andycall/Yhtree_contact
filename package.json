@@ -25,6 +25,7 @@
     "eventproxy": "^0.3.2",
     "express": "^4.12.3",
     "hiredis": "^0.3.0",
+    "iconv-lite": "^0.4.8",
     "lodash": "^3.6.0",
     "mongoose": "^4.0.1",
     "multiparty": "^4.1.1",
