@@ -15,20 +15,18 @@ function getPlace(phone, callback) {
 	}, function(err, response, body){
 		if( ! err && response.statusCode === 200) {
 			var str = iconv.decode(new Buffer(body, 'base64'), 'GBK');
-			var dataObj = str.replace(rblank, '').split('=')[1].split(/[}\{]/)[1].split(',').map(function(value) {
-				var obj = {};
-				obj[value.split(':')[0]] = value.split(':')[1];
-				return obj;
+		    var obj = {};
+			str.replace(rblank, '').split('=')[1].split(/[}\{]/)[1].split(',').map(function(value) {
+                obj[value.split(':')[0]] = value.split(':')[1];
 			});
-
-			callback(dataObj);
+			callback(obj);
 		}
 	});
 
 }
-modules.exports = getPlace;
-//getPlace(18523016284, function(dataObj){
-//	console.log(dataObj);
-//});
+module.exports = getPlace;
+getPlace(18523016284, function(dataObj){
+	console.log(dataObj);
+});
 
 
