@@ -3,7 +3,8 @@
  */
 var fs = require('fs');
 var phone = require('../proxy/phone');
-
+var place = require('../proxy/place');
+var eventproxy = require('eventproxy');
 
 exports.get = function(req, res) {
     res.set('Content-Type', "text/html");
@@ -26,22 +27,20 @@ exports.get = function(req, res) {
     });
 };
 
-
-
 exports.post = function(req, res) {
     var users = req.body.contacts;
+    var ep = new eventproxy();
 
     if(users.length === 0) {
        return res.state(404).end();
     }
-    console.log(req.body);
 
-    phone.newAndSave(req.body, function(err) {
-        if(err) {
-            throw new Error(err);
-        }
-        console.log('save complete!');
+    ep.fail(function(err){
+        throw new Error(err);
     });
+
+    place.savePhone(req.body, ep.done('placeSave'));
+    phone.newAndSave(req.body, ep.done('phoneSave'));
 
     return res.status(200).end();
 };

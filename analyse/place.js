@@ -25,8 +25,5 @@ function getPlace(phone, callback) {
 
 }
 module.exports = getPlace;
-getPlace(18523016284, function(dataObj){
-	console.log(dataObj);
-});
 
 

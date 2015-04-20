@@ -15,7 +15,8 @@ mongoose.connect(config.db, function(err) {
 
 require('./phone');
 require('./relative');
-
+require('./place');
 
 exports.Relative = mongoose.model('Relative');
 exports.Phone = mongoose.model('Phone');
+exports.Place = mongoose.model('Place');

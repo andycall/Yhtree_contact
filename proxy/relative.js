@@ -12,7 +12,7 @@ exports.findRelativesByName = function(name, callback) {
 
 exports.newAndSave = function(data, callback) {
     var relative = new Relative();
-    console.log(data);
+
     _.assign(relative, data);
 
     relative.save(callback);
