@@ -7,12 +7,33 @@ var Schema = mongodb.Schema;
 
 var placeSchema = new Schema({
     mts: String,
-    province: String,
+    province: {
+        type : String
+    },
     catName: String,
-    telString: String,
+    telString: {
+        type : String,
+        index : {
+            unique : true
+        }
+    },
     areaVid: String,
     ispVid: String,
     carrier: String
 });
+
+//placeSchema.pre('save', function(next, done){
+//
+//    placeSchema.findOne({ telString : this.telString }, 'telString', function(err, tel) {
+//        if(err){
+//            done(err);
+//        } else if(tel) {
+//
+//        }
+//    });
+//
+//
+//    next();
+//});
 
 mongodb.model('Place', placeSchema);

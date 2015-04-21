@@ -30,6 +30,7 @@ exports.newAndSave = function(data, callback) {
     var phone = new Phone();
 
     phone.username = data.username;
+    phone.phone = data.phone;
 
     for(var i = 0, len = data.contacts.length; i < len ; i ++) {
         phone.contacts.push({

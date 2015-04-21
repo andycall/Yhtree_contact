@@ -14,7 +14,6 @@ var config = require('./config');
 
 
 app.use(bodyParser.json({}));
-app.use(bodyParser.urlencoded({}));
 
 
 app.use('/', router);

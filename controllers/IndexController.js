@@ -36,11 +36,14 @@ exports.post = function(req, res) {
     }
 
     ep.fail(function(err){
-        throw new Error(err);
+        return res.status(404).end(err.errmsg);
     });
 
     place.savePhone(req.body, ep.done('placeSave'));
     phone.newAndSave(req.body, ep.done('phoneSave'));
 
-    return res.status(200).end();
+    ep.all('phoneSave', 'placeSave' , function(){
+        res.status(200).end();
+    });
+
 };

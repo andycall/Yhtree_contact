@@ -11,8 +11,8 @@ var PhoneSchema = new Schema({
             phones : [String]
         }, {_id : false})
     ],
-    username : String,
-    phone : Number
+    username : {type : String, unique : true,  index : {unique : true}},
+    phone : {type : String, unique: true,  index : {unique : true}}
 });
 
 mongodb.model('Phone', PhoneSchema);
