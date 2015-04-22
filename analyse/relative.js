@@ -1,12 +1,10 @@
 /**
  * Created by andycall on 15/4/16.
  */
-
-var startPerson = "andy";
 var Phone = require('../proxy/phone');
 var EventProxy = require('eventproxy');
 var _ = require('lodash');
-var relative = require('../proxy/relative');
+var Relative = require('../proxy/relative');
 
 
 function Person(name, phones, contacts) {
@@ -16,50 +14,63 @@ function Person(name, phones, contacts) {
     this.contacts = contacts;
 }
 
-var proxy = EventProxy.create('relative', findRelative);
+function getUserData(startPerson, callback){
+    var proxy = new EventProxy();
 
-Phone.getPhoneByName(startPerson, function(err, person) {
-    if(err) {
-        console.log(err);
-    }
-
-    var base = new Person(person.username, person.phone, person.contacts);
-
-    proxy.emit('relative', base);
-
-});
-
-
-function findRelative(base) {
-
-    _.each(base.contacts, function(contact) {
-        Phone.getPhoneByName(contact.username, proxy.done('searchRelative'));
-    });
-
-    proxy.fail(function(err){
-        throw new Error(err);
-    });
-
-    proxy.after('searchRelative', base.contacts.length, function(persons) {
-
-        _.each(persons, function(person) {
-
-            _.each(person.contacts, function(relative) {
-                var username = relative.username;
-                if( username === startPerson){
-                    return;
+    Relative.findRelativesByName(startPerson, function(err, relative) {
+        if(err || relative){
+            callback(null, relative);
+        }
+        else{
+            Phone.getPhoneByName(startPerson, function(err, person) {
+                if(err) {
+                    callback(err);
+                } else if(!person) {
+                    callback("No such person!");
                 }
 
-                if( ! base.relatives[username] ) {
-                    base.relatives[username] = 0;
-                }
+                var base = new Person(person.username, person.phone, person.contacts);
 
-                base.relatives[username] ++;
+                _.each(base.contacts, function(contact) {
+                    Phone.getPhoneByName(contact.username, proxy.done('searchRelative'));
+                });
+
+                proxy.fail(function(err){
+                    callback(err);
+                });
+
+                proxy.after('searchRelative', base.contacts.length, function(persons) {
+
+                    _.each(persons, function(person) {
+
+                        if(person){
+                            _.each(person.contacts, function(relative) {
+                                var username = relative.username;
+                                if( username === startPerson){
+                                    return;
+                                }
+
+                                if( ! base.relatives[username] ) {
+                                    base.relatives[username] = 0;
+                                }
+
+                                base.relatives[username] ++;
+                            });
+                        }
+                    });
+                    Relative.newAndSave(base, function(err){
+                        if(err){
+                            callback(err);
+                        }
+                        else{
+                            callback(null, base);
+                        }
+                    });
+                });
             });
-
-        });
-        relative.newAndSave(base, function(){
-            console.log('relative saved');
-        });
+        }
     });
+
 }
+
+module.exports = getUserData;

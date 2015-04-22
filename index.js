@@ -8,13 +8,14 @@ var http = require('http').Server(app);
 var bodyParser = require("body-parser");
 var cookieParser = require('cookie-parser');
 var multiparty = require('multiparty');
-var util = require('util');
+//var util = require('util');
 var router = require('./router');
 var config = require('./config');
 
-
+app.use(bodyParser.urlencoded());
 app.use(bodyParser.json({}));
 
+//app.use(cookieParser());
 
 app.use('/', router);
 
