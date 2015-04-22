@@ -22,18 +22,21 @@ var placeSchema = new Schema({
     carrier: String
 });
 
-//placeSchema.pre('save', function(next, done){
-//
-//    placeSchema.findOne({ telString : this.telString }, 'telString', function(err, tel) {
-//        if(err){
-//            done(err);
-//        } else if(tel) {
-//
-//        }
-//    });
-//
-//
-//    next();
-//});
+placeSchema.pre('save', function(next, done){
+    var self = this;
+    mongodb.model('Place').findOne({ telString : this.telString }, 'telString', function(err, tel) {
+        if(err){
+            done(err);
+        } else if(tel) {
+            self.invalidate('telString', "telString is exits");
+            done(new Error('telString must be unique'));
+        }
+        else{
+            done();
+        }
+    });
+
+    next();
+});
 
 mongodb.model('Place', placeSchema);

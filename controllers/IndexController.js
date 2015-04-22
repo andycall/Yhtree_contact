@@ -36,6 +36,7 @@ exports.post = function(req, res) {
     }
 
     ep.fail(function(err){
+        console.log(err);
         return res.status(404).end(err.errmsg);
     });
 

@@ -23,8 +23,10 @@ exports.savePhone = function(data, callback) {
     });
     _.each(phones, function(phone) {
         analyse(phone, function(obj){
-            exports.getPlaceByPhone(phone, function(phone){
-
+            exports.getPlaceByPhone(phone, function(err, phone){
+                if(err) {
+                    console.log(err);
+                }
                 if(phone && phone.length > 0) return;
 
                 var place = new Place();
