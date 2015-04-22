@@ -24,6 +24,6 @@ function getPlace(phone, callback) {
 	});
 
 }
-module.exports = getPlace;
+exports.getPlace = getPlace;
 
 

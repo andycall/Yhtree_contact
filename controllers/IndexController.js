@@ -9,7 +9,7 @@ var eventproxy = require('eventproxy');
 exports.get = function(req, res) {
     res.set('Content-Type', "text/html");
     var options = {
-        root: __dirname + "../views/",
+        root: __dirname + "/../views/",
         dotfiles: 'deny',
         headers: {
             'x-timestamp': Date.now(),
@@ -37,7 +37,7 @@ exports.post = function(req, res) {
 
     ep.fail(function(err){
         console.log(err);
-        return res.status(404).end(err.errmsg);
+        return res.status(404).json(err);
     });
 
     place.savePhone(req.body, ep.done('placeSave'));

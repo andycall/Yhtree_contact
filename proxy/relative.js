@@ -9,7 +9,6 @@ exports.findRelativesByName = function(name, callback) {
     Relative.findOne({'username' : name}, callback);
 };
 
-
 exports.newAndSave = function(data, callback) {
     var relative = new Relative();
 
@@ -17,3 +16,4 @@ exports.newAndSave = function(data, callback) {
 
     relative.save(callback);
 };
+

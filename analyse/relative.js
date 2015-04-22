@@ -58,6 +58,7 @@ function getUserData(startPerson, callback){
                             });
                         }
                     });
+
                     Relative.newAndSave(base, function(err){
                         if(err){
                             callback(err);

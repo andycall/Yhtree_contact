@@ -23,20 +23,15 @@ var placeSchema = new Schema({
 });
 
 placeSchema.pre('save', function(next, done){
-    var self = this;
     mongodb.model('Place').findOne({ telString : this.telString }, 'telString', function(err, tel) {
         if(err){
             done(err);
-        } else if(tel) {
-            self.invalidate('telString', "telString is exits");
-            done(new Error('telString must be unique'));
-        }
-        else{
+        } else if(!tel) {
+            next();
+        } else {
             done();
         }
     });
-
-    next();
 });
 
 mongodb.model('Place', placeSchema);
