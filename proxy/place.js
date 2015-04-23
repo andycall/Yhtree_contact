@@ -26,11 +26,42 @@ exports.findRelativePlace = function(username, callback) {
             });
         });
 
+        ep.fail(function(err){
+            callback(err);
+        });
+
         ep.after('getPlaceByPhone', contacts.length, function(places){
             callback(null, places);
         });
     });
 };
+
+exports.getBestPlace = function(places) {
+    var data = {},
+        provinces = {},
+        placeCount = places.length,
+        percentage;
+
+    for(var i = 1; i <= 10; i ++) {
+        data[i + "0%"] = [];
+    }
+
+    _.each(places, function(place) {
+        if(! provinces[place.province]){
+            provinces[place.province] = 0;
+        }
+        provinces[place.province] ++;
+    });
+
+    _.each(provinces, function(provinceCount, provinceName){
+        percentage = provinceCount / placeCount;
+
+        data[+percentage.toString().substring(0,3)*100 + "%"].push(provinceName);
+    });
+
+    return data;
+};
+
 
 exports.savePhone = function(data, callback) {
     var phones = [],
