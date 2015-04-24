@@ -36,32 +36,41 @@ exports.findRelativePlace = function(username, callback) {
     });
 };
 
-exports.getBestPlace = function(places) {
+function _getBest(places, dataSplit, dataTarget){
     var data = {},
-        provinces = {},
+        target = {},
         placeCount = places.length,
         percentage;
 
-    for(var i = 1; i <= 10; i ++) {
-        data[i + "0%"] = [];
-    }
-
     _.each(places, function(place) {
-        if(! provinces[place.province]){
-            provinces[place.province] = 0;
+        if(! target[place[dataTarget]]) {
+           target[place[dataTarget]] = 0;
         }
-        provinces[place.province] ++;
+
+        target[place[dataTarget]] ++;
     });
 
-    _.each(provinces, function(provinceCount, provinceName){
-        percentage = provinceCount / placeCount;
+    _.each(target, function(count, name) {
+        percentage = count / placeCount;
+        var percentageString = +percentage.toString().substring(0,3)*100 + '%'
 
-        data[+percentage.toString().substring(0,3)*100 + "%"].push(provinceName);
+        if(! data[percentageString]){
+            data[percentageString] = [];
+        }
+        data[percentageString].push(name);
     });
 
     return data;
+}
+
+
+exports.getBestPlace = function(places) {
+    return _getBest(places, 10, 'province');
 };
 
+exports.getBestISP = function(places) {
+    return _getBest(places, 3, 'catName');
+};
 
 exports.savePhone = function(data, callback) {
     var phones = [],

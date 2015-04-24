@@ -34,6 +34,6 @@ exports.place = function(req, res) {
             res.status(404).json(err);
         }
 
-        res.json(place.getBestPlace(places));
+        res.json(place.getBestISP(places));
     });
 };
