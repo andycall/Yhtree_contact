@@ -1,0 +1,5 @@
+/Users/Lecion/Dev/Android/ContactAsync/app/build/intermediates/classes/release
+/Users/Lecion/Dev/Android/ContactAsync/app/build/intermediates/pre-dexed/release/support-annotations-21.0.3-85715be752987b69138923beeb0c5c3f5da4a8a7.jar
+/Users/Lecion/Dev/Android/ContactAsync/app/build/intermediates/pre-dexed/release/internal_impl-21.0.3-0b247ec584153cb19867818d25a50c76ec35e6de.jar
+/Users/Lecion/Dev/Android/ContactAsync/app/build/intermediates/pre-dexed/release/classes-49238f9445fb40cdd2a6779d211ccfaaed2647f0.jar
+/Users/Lecion/Dev/Android/ContactAsync/app/build/intermediates/pre-dexed/release/classes-0026a40af8b9b76154c64e6b41fb3a6360fd5fac.jar
