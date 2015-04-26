@@ -14,9 +14,9 @@ var config = require('./config');
 
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json({}));
+app.use(express.static(__dirname + "/public"));
 
 //app.use(cookieParser());
-
 app.use('/', router);
 
 http.listen(config.port, function(){

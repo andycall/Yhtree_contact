@@ -5,6 +5,7 @@ var fs = require('fs');
 var phone = require('../proxy/phone');
 var place = require('../proxy/place');
 var eventproxy = require('eventproxy');
+var config = require('../config');
 
 exports.get = function(req, res) {
     res.set('Content-Type', "text/html");
@@ -30,6 +31,11 @@ exports.get = function(req, res) {
 exports.post = function(req, res) {
     var users = req.body.contacts;
     var ep = new eventproxy();
+    var username = req.body.username;
+    var hostname = req.hostname;
+    var port = config.port;
+    console.log(req.body);
+
 
     if(users.length === 0) {
        return res.state(404).end();
@@ -44,7 +50,9 @@ exports.post = function(req, res) {
     phone.newAndSave(req.body, ep.done('phoneSave'));
 
     ep.all('phoneSave', 'placeSave' , function(){
-        res.status(200).end();
+        res.status(200).json({
+            'url' : 'http://' + hostname + ":" + port + "/showData#" + username
+        });
     });
 };
 

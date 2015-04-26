@@ -24,7 +24,6 @@ exports.index = function(req, res) {
     });
 };
 
-
 exports.place = function(req, res) {
     var data = req.body,
         username = data.username;
