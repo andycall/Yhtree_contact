@@ -34,8 +34,6 @@ exports.post = function(req, res) {
     var username = req.body.username;
     var hostname = req.hostname;
     var port = config.port;
-    console.log(req.body);
-
 
     if(users.length === 0) {
        return res.state(404).end();
