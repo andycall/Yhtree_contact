@@ -3,6 +3,9 @@
  */
 
 var relative = require('../analyse/relative');
+var phone = require('../proxy/phone');
+var _ = require('lodash');
+var eventproxy = require('eventproxy');
 
 
 exports.index = function(req, res) {
@@ -31,10 +34,41 @@ exports.findRelative = function(req, res) {
 
     relative(username, function(err, obj){
         if(err){
-            res.status(404).end(err);
+            return res.status(404).end(err);
         }
 
-        res.json(obj);
+        if(! obj.relatives || Object.keys(obj.relatives).length === 0){
+          return   res.json([]);
+        }
+
+        var data = obj.relatives;
+        var ep = new eventproxy();
+        var response = [];
+
+        _.each(data, function(count, name){
+            console.log(count, name);
+            phone.getPhoneByName(name, function(err, user){
+                if(err || !user) {
+                    delete data[name];
+                    ep.emit('getPhone');
+                    return;
+                }
+
+                response.push({
+                    username : name,
+                    phone : user.phone
+                });
+                ep.emit('getPhone');
+            });
+        });
+
+        if(_.isEmpty(data)){
+            res.json([]);
+        }
+
+        ep.after('getPhone', Object.keys(data).length, function(){
+            res.json(response);
+        });
     });
 
 };

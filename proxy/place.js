@@ -36,11 +36,17 @@ exports.findRelativePlace = function(username, callback) {
     });
 };
 
-function _getBest(places, dataSplit, dataTarget){
+function _getBest(places, datas, dataTarget){
     var data = {},
         target = {},
         placeCount = places.length,
         percentage;
+
+
+    _.each(datas, function(data) {
+        target[data] = 0;
+    });
+
 
     _.each(places, function(place) {
         if(! target[place[dataTarget]]) {
@@ -51,13 +57,23 @@ function _getBest(places, dataSplit, dataTarget){
     });
 
     _.each(target, function(count, name) {
+        console.log(count, name);
         percentage = count / placeCount;
         var percentageString = +percentage.toString().substring(0,3)*100 + '%'
+        var flag = false;
 
-        if(! data[percentageString]){
-            data[percentageString] = [];
+        _.each(datas, function(provinceName){
+            if(provinceName.indexOf(name) >= 0){
+                name = provinceName;
+                flag = true;
+            }
+        });
+
+        if(flag){
+            data[name] = percentage;
         }
-        data[percentageString].push(name);
+
+        //data[percentageString].push(name);
     });
 
     return data;
@@ -65,11 +81,11 @@ function _getBest(places, dataSplit, dataTarget){
 
 
 exports.getBestPlace = function(places) {
-    return _getBest(places, 10, 'province');
+    return _getBest(places, ['北京市','上海市','天津市','重庆', '内蒙古自治区','新疆维吾尔自治区','宁夏回族自治区','广西壮族自治区','西藏自治区', '黑龙江省','吉林省','辽宁省','河北省','河南省','山东省','山西省','湖南省','湖北省','安徽省','江苏省','浙江省','福建省','江西省','广东省','海南省','贵州省','云南省','四川省','陕西省','青海省','甘肃省','台湾省'], 'province');
 };
 
 exports.getBestISP = function(places) {
-    return _getBest(places, 3, 'catName');
+    return _getBest(places, ['中国移动', '中国电信', '中国联通'], 'catName');
 };
 
 exports.savePhone = function(data, callback) {
