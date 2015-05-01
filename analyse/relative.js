@@ -18,8 +18,8 @@ function getUserData(startPerson, callback){
     var proxy = new EventProxy();
 
     Relative.findRelativesByName(startPerson, function(err, relative) {
-        if(err || relative){
-            callback(null, relative);
+        if(err || re/Users/andycall/baiduYun/Yhtree/contact/analyse/place.jslative){
+            callback(err, relative);
         }
         else{
             Phone.getPhoneByName(startPerson, function(err, person) {

@@ -83,7 +83,7 @@ public class MainActivity extends ActionBarActivity {
                     return;
                 }
                 try {
-                    Log.d(TAG, "localPhone " + localPhone);
+                    Log.d(TAG, "localPhone " + localPhone)ln;
                     sendJsonObj.put("username", username);
                     sendJsonObj.put("phone", localPhone);
                 } catch (JSONException e) {
@@ -227,8 +227,6 @@ public class MainActivity extends ActionBarActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
     }
 
     private void sendFinishedMsg(String line) {

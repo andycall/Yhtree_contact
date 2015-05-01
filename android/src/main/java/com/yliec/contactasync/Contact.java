@@ -2,9 +2,6 @@ package com.yliec.contactasync;
 
 import java.util.HashMap;
 
-/**
- * Created by Lecion on 4/1/15.
- */
 public class Contact {
     private HashMap<String, String> contact;
 
@@ -24,6 +21,4 @@ public class Contact {
     public HashMap<String, String> getContact() {
         return contact;
     }
-
-
 }

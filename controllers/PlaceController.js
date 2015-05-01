@@ -33,6 +33,19 @@ exports.place = function(req, res) {
             res.status(404).json(err);
         }
 
+        res.json(place.getBestPlace(places));
+    });
+};
+
+exports.ISP = function(req, res){
+    var data = req.body,
+        username = data.username;
+
+    place.findRelativePlace(username, function(err, places) {
+        if(err){
+            res.status(404).json(err);
+        }
+
         res.json(place.getBestISP(places));
     });
 };
