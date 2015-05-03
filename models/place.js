@@ -6,6 +6,7 @@ var mongodb = require('mongoose');
 var Schema = mongodb.Schema;
 
 var placeSchema = new Schema({
+    username : String,
     mts: String,
     province: {
         type : String

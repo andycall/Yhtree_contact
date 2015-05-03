@@ -3,6 +3,7 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
 </head>
 <body>
@@ -43,181 +44,181 @@
 <script src="bower_components/underscore/underscore-min.js"></script>
 <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
 <script>
-    $(document).ready(function(){
-        var username = location.hash.split("#")[1];
-        var url = location.href;
-        var ep = new EventProxy();
+$(document).ready(function(){
+var username = location.hash.split("#")[1];
+var url = location.href;
+var ep = new EventProxy();
 
-        require.config({
-            paths: {
-                echarts: 'http://echarts.baidu.com/build/dist'
-            }
-        });
+require.config({
+    paths: {
+        echarts: 'http://echarts.baidu.com/build/dist'
+    }
+});
 
-        $.post(location.origin + "/findISP", {
-            username : username
-        }, function(data){
-            ep.emit('findISP', data);
-        });
-
-
-        $.post(location.origin + "/findPlace", {
-            username : username
-        }, function(data){
-           ep.emit('findPlace', data);
-        });
+$.post(location.origin + "/findISP", {
+    username : username
+}, function(data){
+    ep.emit('findISP', data);
+});
 
 
-        $.post(location.origin + "/findRelative", {
-            username : username
-        }, function(data){
-            ep.emit('findRelative', data);
-        });
+$.post(location.origin + "/findPlace", {
+    username : username
+}, function(data){
+   ep.emit('findPlace', data);
+});
 
 
-        ep.all('findISP', "findPlace", "findRelative", function(isp, place, relative){
-            // 使用
-            require(
-                    [
-                        'echarts',
-                        'echarts/chart/pie', // 使用柱状图就加载bar模块，按需加载，
-                        "echarts/chart/funnel"
-                    ],
-                    function (ec) {
-                        // 基于准备好的dom，初始化echarts图表
-                        var ISPChart = ec.init(document.getElementById('isp'));
-                        var placeChart = ec.init(document.getElementById('place'));
+$.post(location.origin + "/findRelative", {
+    username : username
+}, function(data){
+    ep.emit('findRelative', data);
+});
 
 
-                        var ispOption = {
-                            title : {
-                                text: 'ISP 分布情况',
-                                x:'center'
-                            },
-                            tooltip : {
-                                trigger: 'item',
-                                formatter: "{a} <br/>{b} : {c} ({d}%)"
-                            },
-                            legend: {
-                                orient : 'vertical',
-                                x : 'left',
-                                data: Object.keys(isp)
-                            },
-                            toolbox: {
-                                show : false,
-                                feature : {
-                                    mark : {show: true},
-                                    dataView : {show: true, readOnly: false},
-                                    magicType : {
-                                        show: true,
-                                        type: ['pie', 'funnel'],
-                                        option: {
-                                            funnel: {
-                                                x: '25%',
-                                                width: '50%',
-                                                funnelAlign: 'left',
-                                                max: 1
-                                            }
-                                        }
-                                    },
-                                    restore : {show: true},
-                                    saveAsImage : {show: true}
+ep.all('findISP', "findPlace", "findRelative", function(isp, place, relative){
+    // 使用
+    require(
+        [
+            'echarts',
+            'echarts/chart/pie', // 使用柱状图就加载bar模块，按需加载，
+            "echarts/chart/funnel"
+        ],
+        function (ec) {
+            // 基于准备好的dom，初始化echarts图表
+            var ISPChart = ec.init(document.getElementById('isp'));
+            var placeChart = ec.init(document.getElementById('place'));
+
+
+            var ispOption = {
+                title : {
+                    text: 'ISP 分布情况',
+                    x:'center'
+                },
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient : 'vertical',
+                    x : 'left',
+                    data: Object.keys(isp)
+                },
+                toolbox: {
+                    show : false,
+                    feature : {
+                        mark : {show: true},
+                        dataView : {show: true, readOnly: false},
+                        magicType : {
+                            show: true,
+                            type: ['pie', 'funnel'],
+                            option: {
+                                funnel: {
+                                    x: '25%',
+                                    width: '50%',
+                                    funnelAlign: 'left',
+                                    max: 1
                                 }
-                            },
-                            calculable : true,
-                            series : [
-                                {
-                                    name:'运营商分布',
-                                    type:'pie',
-                                    radius : '55%',
-                                    center: ['50%', '60%'],
-                                    data:[
-                                        {value:isp['中国移动'], name:'中国移动'},
-                                        {value:isp['中国联通'], name:'中国联通'},
-                                        {value:isp['中国电信'], name:'中国电信'},
-                                    ]
-                                }
-                            ]
-                        };
-
-
-                        var placeData = [];
-                        var placeName = [];
-
-                        Object.keys(place).forEach(function(province){
-                            var data = {};
-                            data['name'] = province;
-                            var value = place[province];
-                            if(value > 0){
-                                data['value'] = place[province];
-                                placeName.push(province);
-                                placeData.push(data);
                             }
-                        });
-
-
-
-                        var placeOption = {
-                            title : {
-                                text: '地域分布情况',
-                                x:'center'
-                            },
-                            tooltip : {
-                                trigger: 'item',
-                                formatter: "{a} <br/>{b} : {c} ({d}%)"
-                            },
-                            legend: {
-                                orient : 'vertical',
-                                x : 'left',
-                                data: placeName
-                            },
-                            toolbox: {
-                                show : false,
-                                feature : {
-                                    mark : {show: false},
-                                    dataView : {show: false, readOnly: false},
-                                    magicType : {
-                                        show: false,
-                                        type: ['pie', 'funnel'],
-                                        option: {
-                                            funnel: {
-                                                x: '25%',
-                                                width: '50%',
-                                                funnelAlign: 'left',
-                                                max: 1
-                                            }
-                                        }
-                                    },
-                                    restore : {show: true},
-                                    saveAsImage : {show: true}
-                                }
-                            },
-                            calculable : true,
-                            series : [
-                                {
-                                    name:'运营商分布',
-                                    type:'pie',
-                                    radius : '55%',
-                                    center: ['50%', '60%'],
-                                    data:placeData
-                                }
-                            ]
-                        };
-
-                        // 为echarts对象加载数据
-                        ISPChart.setOption(ispOption);
-                        placeChart.setOption(placeOption);
+                        },
+                        restore : {show: true},
+                        saveAsImage : {show: true}
                     }
-            );
+                },
+                calculable : true,
+                series : [
+                    {
+                        name:'运营商分布',
+                        type:'pie',
+                        radius : '55%',
+                        center: ['50%', '60%'],
+                        data:[
+                            {value:isp['中国移动'], name:'中国移动'},
+                            {value:isp['中国联通'], name:'中国联通'},
+                            {value:isp['中国电信'], name:'中国电信'},
+                        ]
+                    }
+                ]
+            };
 
 
-            var template = _.template($("#table_template").html())({
-                list : relative
+            var placeData = [];
+            var placeName = [];
+
+            Object.keys(place).forEach(function(province){
+                var data = {};
+                data['name'] = province;
+                var value = place[province];
+                if(value > 0){
+                    data['value'] = place[province];
+                    placeName.push(province);
+                    placeData.push(data);
+                }
             });
 
-            $("#table").html(template);
-        });
+
+
+            var placeOption = {
+                title : {
+                    text: '地域分布情况',
+                    x:'center'
+                },
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient : 'vertical',
+                    x : 'left',
+                    data: placeName
+                },
+                toolbox: {
+                    show : false,
+                    feature : {
+                        mark : {show: false},
+                        dataView : {show: false, readOnly: false},
+                        magicType : {
+                            show: false,
+                            type: ['pie', 'funnel'],
+                            option: {
+                                funnel: {
+                                    x: '25%',
+                                    width: '50%',
+                                    funnelAlign: 'left',
+                                    max: 1
+                                }
+                            }
+                        },
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                calculable : true,
+                series : [
+                    {
+                        name:'运营商分布',
+                        type:'pie',
+                        radius : '55%',
+                        center: ['50%', '60%'],
+                        data:placeData
+                    }
+                ]
+            };
+
+            // 为echarts对象加载数据
+            ISPChart.setOption(ispOption);
+            placeChart.setOption(placeOption);
+        }
+    );
+
+
+    var template = _.template($("#table_template").html())({
+        list : relative
     });
+
+    $("#table").html(template);
+});
+});
 
 
 </script>

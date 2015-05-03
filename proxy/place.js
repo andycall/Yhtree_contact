@@ -13,6 +13,10 @@ exports.getPlaceByPhone = function(phone, callback) {
     Place.findOne({'telString' : phone}, callback);
 };
 
+exports.getPlaceByName = function(username, callback){
+    Place.findOne({'username' : username}, callback);
+};
+
 exports.findRelativePlace = function(username, callback) {
     var ep = new EventProxy();
 
@@ -42,6 +46,7 @@ function _getBest(places, datas, dataTarget){
         placeCount = places.length,
         percentage;
 
+    places = _.compact(places);
 
     _.each(datas, function(data) {
         target[data] = 0;
@@ -57,9 +62,7 @@ function _getBest(places, datas, dataTarget){
     });
 
     _.each(target, function(count, name) {
-        console.log(count, name);
         percentage = count / placeCount;
-        var percentageString = +percentage.toString().substring(0,3)*100 + '%'
         var flag = false;
 
         _.each(datas, function(provinceName){
@@ -72,8 +75,6 @@ function _getBest(places, datas, dataTarget){
         if(flag){
             data[name] = percentage;
         }
-
-        //data[percentageString].push(name);
     });
 
     return data;
@@ -89,23 +90,31 @@ exports.getBestISP = function(places) {
 };
 
 exports.savePhone = function(data, callback) {
-    var phones = [],
-        ep = new EventProxy();
+    var contacts = [],
+        ep = new EventProxy(),
+        username = data.username;
 
-    phones.push(data.phone);
+    contacts.push({
+        username : username,
+        phone : data.phone
+    });
 
     _.each(data.contacts, function(value) {
-        phones.push(value.phones);
+        contacts.push({
+            username : value.username,
+            phone : value.phones
+        });
     });
-    _.each(phones, function(phone) {
-        analyse(phone, function(obj){
-            exports.getPlaceByPhone(phone, function(err, phone){
+    _.each(contacts, function(contact) {
+        analyse(contact.phone, function(obj){
+            exports.getPlaceByPhone(contact.phone, function(err, phone){
                 if(err) {
                     console.log(err);
                 }
                 if(phone && phone.length > 0) return;
 
                 var place = new Place();
+                obj.username = contact.username;
                 _.assign(place, obj);
 
                 place.save(ep.done('getPhone'));
@@ -115,7 +124,7 @@ exports.savePhone = function(data, callback) {
     ep.fail(function(err) {
         callback(err);
     });
-    ep.after('getPhone', phones.length, function(){
+    ep.after('getPhone', contacts.length, function(){
         callback(null);
     });
 };

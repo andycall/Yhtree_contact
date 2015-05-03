@@ -3,7 +3,7 @@
  */
 
 var relative = require('../analyse/relative');
-var phone = require('../proxy/phone');
+var place = require('../proxy/place');
 var _ = require('lodash');
 var eventproxy = require('eventproxy');
 
@@ -46,28 +46,28 @@ exports.findRelative = function(req, res) {
         var response = [];
 
         _.each(data, function(count, name){
-            console.log(count, name);
-            phone.getPhoneByName(name, function(err, user){
+            place.getPlaceByName(name, function(err, user){
                 if(err || !user) {
                     delete data[name];
                     ep.emit('getPhone');
                     return;
                 }
-
                 response.push({
                     username : name,
-                    phone : user.phone
+                    phone : user.telString
                 });
                 ep.emit('getPhone');
             });
         });
 
         if(_.isEmpty(data)){
+            console.log('data empty')
             res.json([]);
         }
 
         ep.after('getPhone', Object.keys(data).length, function(){
-            res.json(response);
+            console.log('response');
+            res.json(_.slice(response, 0, 10));
         });
     });
 
