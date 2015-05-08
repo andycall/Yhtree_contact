@@ -12,12 +12,7 @@ var placeSchema = new Schema({
         type : String
     },
     catName: String,
-    telString: {
-        type : String,
-        index : {
-            unique : true
-        }
-    },
+    telString: {type : String, unique : true,  index : {unique : true}},
     areaVid: String,
     ispVid: String,
     carrier: String

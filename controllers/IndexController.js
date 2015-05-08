@@ -48,7 +48,7 @@ exports.post = function(req, res) {
     place.savePhone(req.body, ep.done('placeSave'));
     phone.newAndSave(req.body, ep.done('phoneSave'));
 
-    ep.all('phoneSave', 'placeSave' , function(){
+    ep.all('phoneSave' , function(){
         console.log('upload success');
         res.status(200).json({
             'url' : 'http://' + hostname + ":" + port + "/showData#" + username

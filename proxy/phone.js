@@ -39,5 +39,8 @@ exports.newAndSave = function(data, callback) {
         });
     }
 
-    phone.save(callback);
+    phone.save(function(){
+        console.log(456);
+        callback();
+    });
 };

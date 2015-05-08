@@ -105,6 +105,7 @@ exports.savePhone = function(data, callback) {
             phone : value.phones
         });
     });
+
     _.each(contacts, function(contact) {
         analyse(contact.phone, function(obj){
             exports.getPlaceByPhone(contact.phone, function(err, phone){
@@ -116,7 +117,6 @@ exports.savePhone = function(data, callback) {
                 var place = new Place();
                 obj.username = contact.username;
                 _.assign(place, obj);
-
                 place.save(ep.done('getPhone'));
             });
         });
@@ -125,6 +125,7 @@ exports.savePhone = function(data, callback) {
         callback(err);
     });
     ep.after('getPhone', contacts.length, function(){
+        console.log(123);
         callback(null);
     });
 };
