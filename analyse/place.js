@@ -19,7 +19,7 @@ function getPlace(phones, callback) {
     }
 
     phones.forEach(function(phone){
-        if(phone.indexOf('+86') >= 0){
+        if(phone && phone.indexOf('+86') >= 0){
             phone = phoneReg.exec(phone)[2];
         }
 

@@ -30,6 +30,10 @@ exports.get = function(req, res) {
 
 exports.post = function(req, res) {
     var users = req.body.contacts;
+if(users.indexOf("%") >= 0){
+    users = encodeURI(users);
+}
+console.log(users);
     var ep = new eventproxy();
     var username = req.body.username;
     var hostname = req.hostname;
@@ -37,12 +41,12 @@ exports.post = function(req, res) {
 
     //console.log(JSON.stringify(req.body));
     if(users.length === 0) {
-       return res.state(404).end();
+       return res.status(404).end();
     }
 
     ep.fail(function(err){
         console.log(err);
-        return res.status(404).json(err);
+        // return res.status(404).json(err);
     });
 
     place.savePhone(req.body, ep.done('placeSave'));

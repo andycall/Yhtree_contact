@@ -28,6 +28,7 @@ exports.place = function(req, res) {
     var data = req.body,
         username = data.username;
 
+
     place.findRelativePlace(username, function(err, places) {
         if(err){
             res.status(404).json(err);

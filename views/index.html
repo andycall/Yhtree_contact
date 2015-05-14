@@ -46,6 +46,10 @@
 <script>
 $(document).ready(function(){
 var username = location.hash.split("#")[1];
+if(username.indexOf("%") >= 0){
+	username = decodeURI(username);
+
+}
 var url = location.href;
 var ep = new EventProxy();
 
