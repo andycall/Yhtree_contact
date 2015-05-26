@@ -9,8 +9,8 @@ var config = {
     debug: true,
 
     // mongodb 配置
-    db: 'mongodb://127.0.0.1/node_club_dev',
-    db_name: 'node_club_dev',
+    db: 'mongodb://andycall:dong1234@127.0.0.1/yhtree',
+    db_name: 'yhtree',
 
     // redis 配置，默认是本地
     redis_host: '127.0.0.1',

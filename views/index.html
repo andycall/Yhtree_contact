@@ -16,6 +16,15 @@
                 </table>
             </div>
         </div>
+
+        <div class="row">
+            <h3>通过您的通讯录， 好友排名是：</h3>
+            <div class="table-responsive">
+                <table id="table2" class="table table-bordered">
+
+                </table>
+            </div>
+        </div>
         <div id="isp" style="height:400px"></div>
         <div id="place" style="height: 400px;"></div>
     </div>
@@ -80,7 +89,14 @@ $.post(location.origin + "/findRelative", {
 });
 
 
-ep.all('findISP', "findPlace", "findRelative", function(isp, place, relative){
+$.post(location.origin + "/findCare", {
+    username : username
+}, function(data){
+    ep.emit('findCare', data);
+});
+
+
+ep.all('findISP', "findPlace", "findRelative", 'findCare', function(isp, place, relative, findCare){
     // 使用
     require(
         [
@@ -217,13 +233,19 @@ ep.all('findISP', "findPlace", "findRelative", function(isp, place, relative){
 
 
     var template = _.template($("#table_template").html())({
-        list : relative
+        list : relative.sort(function(pre, next){
+            return next.count - pre.count;
+        })
+    });
+
+    console.log(findCare);
+    var template2 = _.template($("#table_template").html())({
+        list : findCare
     });
 
     $("#table").html(template);
+    $("#table2").html(template2);
 });
 });
-
-
 </script>
 </html>

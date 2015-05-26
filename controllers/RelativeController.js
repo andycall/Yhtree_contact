@@ -4,6 +4,7 @@
 
 var relative = require('../analyse/relative');
 var place = require('../proxy/place');
+var User = require('../proxy/phone');
 var _ = require('lodash');
 var eventproxy = require('eventproxy');
 
@@ -52,16 +53,34 @@ exports.findRelative = function(req, res) {
                     ep.emit('getPhone');
                     return;
                 }
+
+                //User.getPhoneByName(username, function(err, user){
+                //    if(err){
+                //        console.log('mongodb error')
+                //        return;
+                //    }
+                //
+                //    _.each(user.contacts, function(person){
+                //        if(person.username === name){
+                //            return;
+                //        }
+                //    });
+                //
+                //});
+
                 response.push({
                     username : name,
-                    phone : user.telString
+                    phone : user.telString,
+                    count : count
                 });
                 ep.emit('getPhone');
             });
         });
 
+        _.pluck(_.sortBy(response, 'count'), 'count');
+
         if(_.isEmpty(data)){
-            console.log('data empty')
+            console.log('data empty');
             res.json([]);
         }
 

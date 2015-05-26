@@ -17,6 +17,8 @@ router.post('/findPlace', PlaceController.place);
 
 router.post('/findISP',PlaceController.ISP);
 
+router.post('/findCare', IndexController.findCare);
+
 router.get('/showData', ShowController.show);
 
 module.exports = router;
