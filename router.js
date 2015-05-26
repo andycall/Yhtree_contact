@@ -9,6 +9,10 @@ var express = require('express'),
     ShowController = require('./controllers/ShowController'),
     router = express.Router();
 
+
+router.get('/', function(req, res){
+	res.end("helloworld");
+});
 router.post('/', IndexController.post);
 
 router.post('/findRelative', RelativeController.findRelative);
